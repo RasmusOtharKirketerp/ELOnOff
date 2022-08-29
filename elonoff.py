@@ -12,13 +12,17 @@ from pathlib import Path
 
 default_url = 'https://maker.ifttt.com/trigger/{event_name}/with/key/{key}'
 
-myWebHookID  = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+myWebHookID  = 'mUM-Q5MRdcmv0qd8MzVnzXplGMPIhN-QB5b067or_nl'
 
 colorLowest = 'BLUE'
 colorLow = 'GREEN'
 color = 'YELLOW'
 colorHigh = 'RED'
 colorHigest = 'PURPLE'
+priceTohigh = 'price_to_high'
+chargeOn = "chargeOn"
+chargeOff = "chargeOff"
+
 
 def createHeader():
     apiHeader = {
@@ -140,16 +144,6 @@ class IftttException(Exception):
 
     def __str__(self):
         return repr(f"Status code: {self.status_code}, message: {self.content}")
-current_hour_price_kwh = getDKSportPrice()
-
-print(current_hour_price_kwh)
-
-wh = IftttWebhook(myWebHookID)
-#priceTohigh = 'qeiTcPnb-if-maker-event-price_to_high-then-turn-off-all'
-priceTohigh = 'price_to_high'
-chargeOn = "chargeOn"
-chargeOff = "chargeOff"
-#if current_hour_price_kwh > 4:
 
 
 def setColor(inValue):
@@ -173,13 +167,25 @@ def setColor(inValue):
     return retVal
 
 
-state = setColor(current_hour_price_kwh)
-wh.trigger(priceTohigh, state, current_hour_price_kwh)
+#MAIN ---------------------------------
 
-if state == colorLow or state == colorLowest:
-    wh.trigger(chargeOn)
-else :
-    wh.trigger(chargeOff)
+
+while True:
+    current_hour_price_kwh = getDKSportPrice()
+
+    print(current_hour_price_kwh)
+
+    wh = IftttWebhook(myWebHookID)
+
+    state = setColor(current_hour_price_kwh)
+    wh.trigger(priceTohigh, state, current_hour_price_kwh)
+
+    if state == colorLow or state == colorLowest:
+        wh.trigger(chargeOn)
+    else :
+        wh.trigger(chargeOff)
+
+    time.sleep(60*60)
 
 
 
