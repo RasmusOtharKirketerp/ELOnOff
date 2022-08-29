@@ -13,10 +13,10 @@ This Python program
 
 
 
-Thanks to :
-#https://www.energidataservice.dk/tso-electricity/elspotprices
-#https://gist.github.com/tiede/66a160f8361e0821b904c6d47c6c7d71
-#https://github.com/DrGFreeman/IFTTT-Webhook
-#https://ifttt.com/maker_webhooks
+Thanks to <br>
+#https://www.energidataservice.dk/tso-electricity/elspotprices <br>
+#https://gist.github.com/tiede/66a160f8361e0821b904c6d47c6c7d71 <br>
+#https://github.com/DrGFreeman/IFTTT-Webhook <br>
+#https://ifttt.com/maker_webhooks <br>
 # find webhook id here : https://ifttt.com/maker_webhooks/settings
 
