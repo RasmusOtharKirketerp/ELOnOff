@@ -1,6 +1,6 @@
 # ELOnOff
 
-Get easy access to price on electicity in Denmark by colorcoding you Hue Light according to price and turn on charger (wemo switch) when low price and torn off when price if high
+Get easy access to price on electicity in Denmark by colorcoding you Hue Light according to price and turn on charger (wemo switch) when low price and turn off when price is high
 
 
 
