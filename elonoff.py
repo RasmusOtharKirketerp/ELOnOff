@@ -189,4 +189,5 @@ while True:
     else:
         wh.trigger(chargeOff)
 
+    print("elonof.py - sleeping....")
     time.sleep(60*60)

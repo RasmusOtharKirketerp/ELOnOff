@@ -234,5 +234,6 @@ while True:
     # print(current_hour_price_kwh)
     schedule.run_pending()
     # getPrices48Hours()
-    print("looping....", datetime.datetime.now())
+    print("el_3hours_cheep.py : looping....", datetime.datetime.now())
+
     time.sleep(60)
