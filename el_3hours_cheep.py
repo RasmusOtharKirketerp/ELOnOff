@@ -225,8 +225,8 @@ def getPrices48Hours():
 # MAIN ---------------------------------
 # Every day at 12am or 00:00 time hello_world() is called.
 
-schedule.every().day.at("06:00").do(getPrices48Hours)
-schedule.every().day.at("18:00").do(getPrices48Hours)
+schedule.every().day.at("08:00").do(getPrices48Hours)
+schedule.every().day.at("20:00").do(getPrices48Hours)
 wh = IftttWebhook(myWebHookID)
 
 while True:
