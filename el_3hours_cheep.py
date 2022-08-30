@@ -235,4 +235,4 @@ while True:
     schedule.run_pending()
     # getPrices48Hours()
     print("looping....", datetime.datetime.now())
-    time.sleep(1)
+    time.sleep(60)
