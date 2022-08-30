@@ -6,9 +6,12 @@
 # find webhook id here : https://ifttt.com/maker_webhooks/settings
 
 
+import datetime
 import requests
 import time
 from pathlib import Path
+import time
+import schedule
 
 default_url = 'https://maker.ifttt.com/trigger/{event_name}/with/key/{key}'
 
@@ -22,6 +25,8 @@ colorHigest = 'PURPLE'
 priceTohigh = 'price_to_high'
 chargeOn = "chargeOn"
 chargeOff = "chargeOff"
+
+windowAhead = "12"
 
 
 def createHeader():
@@ -40,7 +45,8 @@ def filter_current_price(result):
 
 def spotprices():
     headers = createHeader()
-    url = "https://api.energidataservice.dk/datastore_search?resource_id=elspotprices&limit=48&filters={\"PriceArea\":\"DK1\"}&sort=HourUTC desc"
+    url = "https://api.energidataservice.dk/datastore_search?resource_id=elspotprices&limit=" + \
+        windowAhead + "&filters={\"PriceArea\":\"DK1\"}&sort=HourUTC desc"
     return requests.get(url, headers=headers[0]).json()
 
 
@@ -48,6 +54,7 @@ def getDKSportPrice():
     response = spotprices()
     prices = response["result"]["records"]
     current_hour_result = list(filter(filter_current_price, iter(prices)))
+    print(prices)
 
     if len(current_hour_result) == 0:
         raise Exception("No current hour result")
@@ -60,6 +67,7 @@ def getDKSportPrice():
     #print (current_hour_price_kwh)
 
     return current_hour_price_kwh
+
 
 # webhooks IFTTT
 #
@@ -171,22 +179,60 @@ def setColor(inValue):
     return retVal
 
 
-# MAIN ---------------------------------
+def getPrices48Hours():
+    responseJSON = spotprices()
 
+    data = responseJSON["result"]["records"]
+
+    tid = []
+    pris = []
+    avg = []
+
+    for x in data:
+        x_tid = x["HourDK"]
+        x_pris = x["SpotPriceEUR"]
+        print(x_tid, x_pris)
+        tid.append(x_tid)
+        x_pris = round((float(x_pris) * 7.46) / 1000.0, 2)
+        pris.append(x_pris)
+
+    print("len(tid) : ", len(tid))
+    print("len(pris) : ", len(pris))
+
+    idx = 0
+    for x in pris:
+        if idx > 3 and (idx < (len(pris) - 3)):
+            avg_window = round((pris[idx-1] + x + pris[idx+1])/3, 2)
+        else:
+            avg_window = round(x)
+
+        avg.append(avg_window)
+
+        print(idx, " avg : ", avg_window, " pris : ",
+              pris[idx], " dato : ", tid[idx])
+        idx += 1
+
+    min_val = min(avg)
+    print("Min value = ", min_val)
+    min_idx = avg.index(min_val)
+    print("Min. value index = ", min_idx)
+
+    print("dato for min value : ", tid[min_idx])
+
+    wh.trigger("3hoursLow", windowAhead, tid[min_idx])
+
+
+# MAIN ---------------------------------
+# Every day at 12am or 00:00 time hello_world() is called.
+
+schedule.every().day.at("06:00").do(getPrices48Hours)
+schedule.every().day.at("18:00").do(getPrices48Hours)
+wh = IftttWebhook(myWebHookID)
 
 while True:
-    current_hour_price_kwh = getDKSportPrice()
-
-    print(current_hour_price_kwh)
-
-    wh = IftttWebhook(myWebHookID)
-
-    state = setColor(current_hour_price_kwh)
-    wh.trigger(priceTohigh, state, current_hour_price_kwh)
-
-    if state == colorLow or state == colorLowest:
-        wh.trigger(chargeOn)
-    else:
-        wh.trigger(chargeOff)
-
-    time.sleep(60*60)
+    #current_hour_price_kwh = getDKSportPrice()
+    # print(current_hour_price_kwh)
+    schedule.run_pending()
+    # getPrices48Hours()
+    print("looping....", datetime.datetime.now())
+    time.sleep(1)
