@@ -228,7 +228,7 @@ def getPrices48Hours():
 schedule.every().day.at("08:00").do(getPrices48Hours)
 schedule.every().day.at("20:00").do(getPrices48Hours)
 wh = IftttWebhook(myWebHookID)
-
+getPrices48Hours()
 while True:
     #current_hour_price_kwh = getDKSportPrice()
     # print(current_hour_price_kwh)
