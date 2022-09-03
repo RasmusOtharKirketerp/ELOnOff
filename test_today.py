@@ -1,0 +1,2 @@
+import energidataservice
+energidataservice.getDKPriceToday()

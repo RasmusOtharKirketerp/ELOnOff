@@ -7,7 +7,7 @@ colorHigest = 'PURPLE'
 priceTohigh = 'price_to_high'
 chargeOn = "chargeOn"
 chargeOff = "chargeOff"
-windowAhead = "12"
+windowAhead = "48"
 
 
 def setColor(inValue):

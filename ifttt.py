@@ -54,12 +54,10 @@ class IftttWebhook():
             body['value3'] = value3
         url = self._url.format(event_name=event_name, key=self._key)
         response = requests.post(url, json=body)
-        print(url)
+        # print(url)
         if response.status_code != 200:
             raise IftttException(response.status_code,
                                  response.text.strip('\n'))
-        else:
-            print(response.status_code, " - ", response.text.strip('\n'))
 
     def gmail(self, to, subject=None, body=None):
         """Triggers an IFTTT event named 'send_gmail' that send an email using

@@ -30,7 +30,7 @@ wh = ifttt.IftttWebhook(myWebHookID)
 run()
 while True:
     schedule.run_pending()
-    print("el_3hours_cheep.py : looping....", datetime.now())
+    print("bs.py : looping....", datetime.now())
     for j in schedule.get_jobs():
         print("Jobs in queue :", j)
     time.sleep(5)
