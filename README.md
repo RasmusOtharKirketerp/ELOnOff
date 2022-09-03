@@ -1,3 +1,8 @@
+# bs.py
+Billig strøm <br>
+Afvikler to gange om dagen (kl 8 og 20) og sender billigste tid i webhook "LowestPriceRestOfTheDay"
+
+
 # ELOnOff
 
 Get easy access to price on electicity in Denmark by colorcoding you Hue Light according to price and turn on charger (wemo switch) when low price and turn off when price is high
